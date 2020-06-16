@@ -3,14 +3,12 @@ import { useSpring, animated } from "react-spring";
 import "./styles.css";
 
 const defaults = {
-  a1: { x: 15, y: 50 },
-  a2: { x: 45, y: 10 },
-  a3: { x: 75, y: 50 }
+  a3: { x: 15, y: 50, text: "COST", offsetX: -8, offsetY: 9 },
+  a1: { x: 45, y: 10, text: "TIME", offsetX: -8, offsetY: -5 },
+  a2: { x: 75, y: 50, text: "QUALITY", offsetX: -13, offsetY: 9 }
 };
 
-function Key({ point, lineTo, offsetX, offsetY, text, onFinish }) {
-  const { x, y } = point;
-
+function Key({ x, y, lineTo, offsetX, offsetY, text, onFinish }) {
   const sText = useSpring({
     from: { opacity: 0 },
     to: [{ opacity: 1 }]
@@ -46,32 +44,18 @@ export default function App() {
   return (
     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
       <Key
-        point={defaults.a1}
-        offsetX={-8}
-        offsetY={9}
-        text="COST"
-        lineTo={defaults.a2}
+        {...a1}
+        lineTo={a2}
         onFinish={() => setValue(() => (value === 0 ? 1 : value))}
       />
       {value > 0 ? (
         <Key
-          point={defaults.a2}
-          offsetX={-8}
-          offsetY={-5}
-          text="TIME"
+          {...a2}
           lineTo={defaults.a3}
           onFinish={() => setValue(() => (value === 1 ? 2 : value))}
         />
       ) : null}
-      {value > 1 ? (
-        <Key
-          point={defaults.a3}
-          offsetX={-13}
-          offsetY={9}
-          text="QUALITY"
-          lineTo={defaults.a1}
-        />
-      ) : null}
+      {value > 1 ? <Key {...a3} lineTo={defaults.a1} /> : null}
     </svg>
   );
 }
